@@ -1,7 +1,7 @@
 const VF = Vex.Flow;
 
 export default class {
-    constructor(el, width, height) {
+    constructor(el, height) {
         this.width = el.width();
         this.renderer = new VF.Renderer(el.get(0), VF.Renderer.Backends.SVG);
         this.renderer.resize(this.width, height);
@@ -12,37 +12,56 @@ export default class {
     draw(bars) {
         let x = 0;
         let y = 0;
-        let barNumber = 0;
         const barWidth = 200;
         const firstBarExtraWidth = 60;
         const barsPerRow = ~~((this.width - firstBarExtraWidth) / barWidth);
-        bars.forEach(barNotes => {
-            let notes = barNotes.map(n => n.flowNote);
-            const stave = new VF.Stave(x, y, barWidth + (barNumber === 0 ? firstBarExtraWidth : 0));
-            if (barNumber === 0) {
-                stave.addClef("treble").addTimeSignature("4/4");
-            }
-            stave.setContext(this.context).draw();
-
-            //const beams = VF.Beam.generateBeams(notes);    
-            //Vex.Flow.Formatter.FormatAndDraw(this.context, stave, notes);
-            //beams.forEach(b => b.setContext(this.context).draw());
-            
-            // TODO set time signature correctly (e.g. via ctor param)
-            let voice = new VF.Voice({num_beats: 4, beat_value: 4});
-            voice.addTickables(notes);
-            const beams = VF.Beam.generateBeams(notes);
-            let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 200);
-            voice.draw(this.context, stave);
-            beams.forEach(b => b.setContext(this.context).draw());
-            
-            x += stave.width;
-            barNumber = (barNumber + 1) % barsPerRow;
-            if (barNumber === 0) {
+        
+        bars.forEach((bar, i) => {
+            const firstInRow = i % barsPerRow === 0;
+            if (firstInRow && i !== 0) {
                 x = 0;
-                y += 100;
+                y += 170;
             }
+            
+            const spec = {
+                bar: bar, 
+                x: x,   
+                y: y,
+                width: barWidth + (firstInRow ? firstBarExtraWidth : 0), 
+                firstInRow: firstInRow
+            };
+            
+            this._drawBar(spec);
+            
+            x += spec.width;
         });
+    }
+    
+    _drawBar(spec) {
+        const [tStave, tVoice, tBeams] = this._createStave(spec, "treble", spec.bar.trebleNotes);
+        const [bStave, bVoice, bBeams] = this._createStave(spec, "bass", spec.bar.bassNotes);
+        
+        const voices = [tVoice, bVoice];
+        const formatter = new VF.Formatter().format(voices, 200);
+        tVoice.draw(this.context, tStave);
+        bVoice.draw(this.context, bStave);
+        tBeams.concat(bBeams).forEach(b => b.setContext(this.context).draw());
+    }
+    
+    _createStave(spec, clef, notes) {
+        const flowNotes = notes.map(n => n.toFlowNote(clef));
+        const y = spec.y + (clef === "bass" ? 80 : 0);
+        const stave = new VF.Stave(spec.x, y, spec.width);
+        if (spec.firstInRow) {
+        // TODO set time signature correctly (e.g. via ctor param)
+            stave.addClef(clef).addTimeSignature("4/4");
+        }
+        stave.setContext(this.context).draw();
+        
+        const voice = new VF.Voice({num_beats: 4, beat_value: 4});
+        voice.addTickables(flowNotes);
+        const beams = VF.Beam.generateBeams(flowNotes);
+        return [stave, voice, beams];
     }
 }
 
