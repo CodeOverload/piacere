@@ -1,7 +1,7 @@
 
 import Note from "./note";
 
-function* randomIterator(items) {	
+function* _randomIterator(items) {
   let b = 1;
   while (items.length > 0) {
     const rand = Math.random() * b;
@@ -15,7 +15,7 @@ function* randomIterator(items) {
   }
 }
 
-function getAvailableNotes() {
+function _getAvailableNotes() {
   return [
     { value: 1, weight: 0.05 }, 
     { value: 2, weight: 0.2 }, 
@@ -24,22 +24,22 @@ function getAvailableNotes() {
   ];
 }
 
-function randomiseNotes(curNotes, curDuration, numBeats, beatValue) {
+function _randomiseNotes(curNotes, curDuration, numBeats, beatValue) {
     const totalDuration = numBeats / beatValue;
     if (curDuration === totalDuration) return curNotes;
     const remainingDuration = totalDuration - curDuration;
-    const availableNotes = randomIterator(getAvailableNotes());
+    const availableNotes = _randomIterator(_getAvailableNotes());
     for (let note of availableNotes) {
       const noteDuration = 1 / note;
       if (noteDuration <= remainingDuration) {
-      	const result = randomiseNotes(curNotes.concat(note), curDuration + noteDuration, numBeats, beatValue);
+      	const result = _randomiseNotes(curNotes.concat(note), curDuration + noteDuration, numBeats, beatValue);
         if (result) return result;
       }
     }
     return null;
 }
 
-module.exports.randomiseNotes = function(numBeats, beatValue) {
-    return randomiseNotes([], 0, numBeats, beatValue)
+export function randomiseNotes(numBeats, beatValue) {
+    return _randomiseNotes([], 0, numBeats, beatValue)
         .map(n => new Note("f/4", n));
 }
