@@ -18,8 +18,8 @@ function _randomDurations(curNotes, curDuration, options) {
     const totalDuration = options.totalDuration;
     if (curDuration === totalDuration) return curNotes;
     const remainingDuration = totalDuration - curDuration;
-    const availableNotes = _randomIterator(options.notes);
-    for (let note of availableNotes) {
+    const availableDurations = _randomIterator(options.durations);
+    for (let note of availableDurations) {
         const noteDuration = 1 / note;
         if (noteDuration <= remainingDuration) {
             const result = _randomDurations(curNotes.concat(note), curDuration + noteDuration, options);
@@ -29,24 +29,33 @@ function _randomDurations(curNotes, curDuration, options) {
     return null;
 }
 
+function _randomNotes(durations, options) {
+    const noteRange = options.noteRange;
+    const availableValues = noteRange[1] - noteRange[0] + 1;
+    return durations.map(duration => {
+        const noteValue = ~~Math.min(Math.random() * availableValues, availableValues - 1) + noteRange[0];
+        return new Note(noteValue, duration);
+    });
+}
+
 export function randomiseNotes(options) {
-    return _randomDurations([], 0, options)
-        .map((n, i) => new Note(3 + i, n));
+    return _randomNotes(_randomDurations([], 0, options), options);
 }
 
 export class RandomNotesOptions {
-    constructor(numBeats, beatValue, notes) {
+    constructor(numBeats, beatValue, noteRange, durations) {
         this.numBeats = numBeats;
         this.beatValue = beatValue;
-        this._notes = notes;
+        this._durations = durations;
+        this.noteRange = noteRange;
     }
 
     get totalDuration() {
         return this.numBeats / this.beatValue;
     }
 
-    get notes() {
-        return this._notes.slice();
+    get durations() {
+        return this._durations.slice();
     }
 }
 

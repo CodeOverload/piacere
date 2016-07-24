@@ -3,8 +3,9 @@ var VF = Vex.Flow;
 const notes = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
 function _toKey(noteIndex) {
+    noteIndex += 42;
     const note = notes[(noteIndex + 2) % notes.length];
-    const octave = ~~(noteIndex / notes.length) + 4;
+    const octave = ~~(noteIndex / notes.length) - 2;
     return note + "/" + octave;
 }
 

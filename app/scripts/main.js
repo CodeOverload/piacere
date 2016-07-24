@@ -1,4 +1,3 @@
-
 import * as randomise from './randomise';
 import Renderer from './renderer';
 
@@ -6,13 +5,13 @@ import Bar from "./bar";
 
 (() => {
 
-    const trebleOptions = new randomise.RandomNotesOptions(4, 4, [
+    const trebleOptions = new randomise.RandomNotesOptions(4, 4, [2, 6], [
         { value: 1, weight: 0.05 },
         { value: 2, weight: 0.2 },
         { value: 4, weight: 0.6 },
         { value: 8, weight: 0.05 }
     ]);
-    const bassOptions = new randomise.RandomNotesOptions(4, 4, [
+    const bassOptions = new randomise.RandomNotesOptions(4, 4, [-5, -1], [
         { value: 1, weight: 0.25 },
         { value: 2, weight: 0.75 }
     ]);
