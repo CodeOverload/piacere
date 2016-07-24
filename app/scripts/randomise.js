@@ -6,7 +6,8 @@ function* _randomIterator(items) {
         const rand = Math.random() * b;
         let currWeight = 0;
         const index = items.findIndex(item => {
-            if (currWeight += item.weight > rand - 0.001) return true;
+            currWeight += item.weight;
+            if (currWeight > rand - 0.001) return true;
         });
         const item = items.splice(index, 1)[0];
         b -= item.weight;

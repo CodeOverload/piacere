@@ -4,9 +4,8 @@ import Renderer from './renderer';
 import Bar from "./bar";
 
 (() => {
-
     const trebleOptions = new randomise.RandomNotesOptions(4, 4, [2, 6], [
-        { value: 1, weight: 0.05 },
+        { value: 1, weight: 0.15 },
         { value: 2, weight: 0.2 },
         { value: 4, weight: 0.6 },
         { value: 8, weight: 0.05 }
@@ -22,4 +21,3 @@ import Bar from "./bar";
     const renderer = new Renderer($('#music-canvas'), 500);
     renderer.draw(bars);
 })();
-
