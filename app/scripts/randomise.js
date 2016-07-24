@@ -14,7 +14,7 @@ function* _randomIterator(items) {
     }
 }
 
-function _randomiseNotes(curNotes, curDuration, options) {
+function _randomDurations(curNotes, curDuration, options) {
     const totalDuration = options.totalDuration;
     if (curDuration === totalDuration) return curNotes;
     const remainingDuration = totalDuration - curDuration;
@@ -22,7 +22,7 @@ function _randomiseNotes(curNotes, curDuration, options) {
     for (let note of availableNotes) {
         const noteDuration = 1 / note;
         if (noteDuration <= remainingDuration) {
-            const result = _randomiseNotes(curNotes.concat(note), curDuration + noteDuration, options);
+            const result = _randomDurations(curNotes.concat(note), curDuration + noteDuration, options);
             if (result) return result;
         }
     }
@@ -30,8 +30,8 @@ function _randomiseNotes(curNotes, curDuration, options) {
 }
 
 export function randomiseNotes(options) {
-    return _randomiseNotes([], 0, options)
-        .map(n => new Note("f/4", n));
+    return _randomDurations([], 0, options)
+        .map((n, i) => new Note(3 + i, n));
 }
 
 export class RandomNotesOptions {
