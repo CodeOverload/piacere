@@ -6,7 +6,7 @@ export default class {
         this.renderer = new VF.Renderer(el.get(0), VF.Renderer.Backends.SVG);
         this.renderer.resize(this.width, height);
         this.context = this.renderer.getContext();
-        this.context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+        this.context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed');
     }
 
     draw(bars) {
@@ -38,8 +38,8 @@ export default class {
     }
 
     _drawBar(spec) {
-        const [tStave, tVoice, tBeams] = this._createStave(spec, "treble", spec.bar.trebleNotes);
-        const [bStave, bVoice, bBeams] = this._createStave(spec, "bass", spec.bar.bassNotes);
+        const [tStave, tVoice, tBeams] = this._createStave(spec, 'treble', spec.bar.trebleNotes);
+        const [bStave, bVoice, bBeams] = this._createStave(spec, 'bass', spec.bar.bassNotes);
 
         const voices = [tVoice, bVoice];
         const formatter = new VF.Formatter().format(voices, 200);
@@ -50,11 +50,11 @@ export default class {
 
     _createStave(spec, clef, notes) {
         const flowNotes = notes.map(n => n.toFlowNote(clef));
-        const y = spec.y + (clef === "bass" ? 80 : 0);
+        const y = spec.y + (clef === 'bass' ? 80 : 0);
         const stave = new VF.Stave(spec.x, y, spec.width);
         if (spec.firstInRow) {
         // TODO set time signature correctly (e.g. via ctor param)
-            stave.addClef(clef).addTimeSignature("4/4");
+            stave.addClef(clef).addTimeSignature('4/4');
         }
         stave.setContext(this.context).draw();
 

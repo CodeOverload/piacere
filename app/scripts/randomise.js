@@ -1,4 +1,4 @@
-import Note from "./note";
+import Note from './note';
 
 function* _randomIterator(items) {
     let b = 1;
@@ -7,7 +7,7 @@ function* _randomIterator(items) {
         let currWeight = 0;
         const index = items.findIndex(item => {
             currWeight += item.weight;
-            if (currWeight > rand - 0.001) return true;
+            return currWeight > rand - 0.001;
         });
         const item = items.splice(index, 1)[0];
         b -= item.weight;

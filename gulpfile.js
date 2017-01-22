@@ -57,7 +57,10 @@ function lint(files, options) {
 
 gulp.task('lint', () => {
   return lint('app/scripts/**/*.js', {
-    fix: true
+    fix: true,
+    parserOptions: {
+      sourceType: "module"
+    }
   })
     .pipe(gulp.dest('app/scripts'));
 });

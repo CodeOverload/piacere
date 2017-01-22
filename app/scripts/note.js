@@ -6,7 +6,7 @@ function _toKey(noteIndex) {
     noteIndex += 42;
     const note = notes[(noteIndex + 2) % notes.length];
     const octave = ~~(noteIndex / notes.length) - 2;
-    return note + "/" + octave;
+    return note + '/' + octave;
 }
 
 export default class Note {
@@ -20,7 +20,7 @@ export default class Note {
             keys: this.notes.map(n => _toKey(n)),
             duration: '' + this.duration,
             clef: clef,
-            stem_direction: clef === "treble" ? 1 : -1
+            stem_direction: clef === 'treble' ? 1 : -1
         });
     }
 }

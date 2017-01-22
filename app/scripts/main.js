@@ -1,7 +1,7 @@
 import * as randomise from './randomise';
 import Renderer from './renderer';
 
-import Bar from "./bar";
+import Bar from './bar';
 
 (() => {
     const trebleOptions = new randomise.RandomNotesOptions(4, 4, [2, 6], [
@@ -15,7 +15,7 @@ import Bar from "./bar";
         { value: 2, weight: 0.75 }
     ]);
 
-    const bars = Array(4).fill().map(_ => new Bar(randomise.randomiseNotes(trebleOptions),
+    const bars = Array(9).fill().map(_ => new Bar(randomise.randomiseNotes(trebleOptions),
         randomise.randomiseNotes(bassOptions)));
 
     const renderer = new Renderer($('#music-canvas'), 500);
