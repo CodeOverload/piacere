@@ -20,6 +20,8 @@ export default class {
         const numBars = numRows * barsPerRow;
         const bars = Array(numBars).fill().map(_ => barGenerator());
 
+        // Clear the previous image from the context, and resize based on the required dimensions
+        this.renderer.getContext().clear();
         this.renderer.resize(this.width, rowHeight * numRows);
 
         // Render each bar

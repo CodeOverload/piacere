@@ -4,7 +4,8 @@
   "dependencies": {
     "bootstrap-sass": "~3.3.5",
     "vexflow": "^1.2.63",
-    "babel-polyfill": "^0.0.1"
+    "babel-polyfill": "^0.0.1",
+    "knockout": "^3.4.1"
   },
   "overrides": {
     "bootstrap-sass": {
