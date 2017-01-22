@@ -1,26 +1,33 @@
 const VF = Vex.Flow;
 
 export default class {
-    constructor(el, height) {
+    constructor(el) {
         this.width = el.width();
         this.renderer = new VF.Renderer(el.get(0), VF.Renderer.Backends.SVG);
-        this.renderer.resize(this.width, height);
         this.context = this.renderer.getContext();
         this.context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed');
     }
 
-    draw(bars) {
+    draw(barGenerator, numRows) {
         let x = 0;
         let y = 0;
-        const barWidth = 200;
+        const barWidth = 220;
+        const rowHeight = 170;
         const firstBarExtraWidth = 60;
         const barsPerRow = ~~((this.width - firstBarExtraWidth) / barWidth);
 
+        // Generate the correct number of bars to fill the required number of rows
+        const numBars = numRows * barsPerRow;
+        const bars = Array(numBars).fill().map(_ => barGenerator());
+
+        this.renderer.resize(this.width, rowHeight * numRows);
+
+        // Render each bar
         bars.forEach((bar, i) => {
             const firstInRow = i % barsPerRow === 0;
             if (firstInRow && i !== 0) {
                 x = 0;
-                y += 170;
+                y += rowHeight;
             }
 
             const spec = {

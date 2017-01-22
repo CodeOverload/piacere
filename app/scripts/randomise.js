@@ -39,11 +39,11 @@ function _randomNotes(durations, options) {
     });
 }
 
-export function randomiseNotes(options) {
+export function bar(options) {
     return _randomNotes(_randomDurations([], 0, options), options);
 }
 
-export class RandomNotesOptions {
+export class Options {
     constructor(numBeats, beatValue, noteRange, durations) {
         this.numBeats = numBeats;
         this.beatValue = beatValue;
