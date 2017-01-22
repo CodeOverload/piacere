@@ -59,7 +59,11 @@ gulp.task('lint', () => {
   return lint('app/scripts/**/*.js', {
     fix: true,
     parserOptions: {
-      sourceType: "module"
+      sourceType: 'module'
+    },
+    rules: {
+      'no-tabs': 'warn',
+      'no-trailing-spaces': 'error'
     }
   })
     .pipe(gulp.dest('app/scripts'));
