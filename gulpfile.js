@@ -1,4 +1,3 @@
-// generated on 2016-07-21 using generator-webapp 2.1.0
 const gulp = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync');
@@ -9,6 +8,7 @@ const browserify = require('browserify');
 const babelify = require('babelify');
 const buffer = require('vinyl-buffer');
 const source = require('vinyl-source-stream');
+const deploy = require('gulp-gh-pages');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -189,3 +189,10 @@ gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
 gulp.task('default', ['clean'], () => {
   gulp.start('build');
 });
+
+// Push build to gh-pages
+gulp.task('deploy', ['build'], function () {
+  return gulp.src("./dist/**/*")
+    .pipe(deploy())
+});
+
