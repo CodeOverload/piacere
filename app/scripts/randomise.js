@@ -39,11 +39,16 @@ function _randomNotes(durations, options) {
     });
 }
 
+function _randomHandPosition(noteRange) {
+    const delta = noteRange[1] - noteRange[0] + 1;
+    return ~~(Math.random() * delta) + noteRange[0];
+}
+
 export function bar(options) {
     return _randomNotes(_randomDurations([], 0, options), options);
 }
 
-export class Options {
+export class BarOptions {
     constructor(numBeats, beatValue, noteRange, durations) {
         this.numBeats = numBeats;
         this.beatValue = beatValue;
@@ -57,6 +62,39 @@ export class Options {
 
     get durations() {
         return this._durations.slice();
+    }
+}
+
+/**
+ * Generates random hand positions. That is, the lowest pitch note each hand
+ * should play
+ *
+ * @returns [l, r]
+ */
+export function hands(options) {
+    const left = _randomHandPosition(options.lNoteRange);
+    const rNoteRange = [
+        Math.max(options.rNoteRange[0], left + 5),
+        options.rNoteRange[1]
+    ];
+    const right = _randomHandPosition(rNoteRange);
+    return [left, right];
+}
+
+export class HandsOptions {
+    /**
+     * Options to use for the hands function. Note that n1 < n2, and n3 < n4,
+     * and n4 > n2 + 5 (the latter is so there's always space to place the
+     * right hand if the left hand is placed at the very top of it's available range).
+     *
+     * @param lNoteRange the range of notes that the left hand lowest pitch note
+     * should fall within; [n1, n2] inclusive
+     * @param rNoteRante the range of notes that the right hand lowest pitch note
+     * should fall within; [n3, n4] inclusive
+     */
+    constructor(lNoteRange, rNoteRange, minHandDistance) {
+        this.lNoteRange = lNoteRange;
+        this.rNoteRange = rNoteRange;
     }
 }
 

@@ -12,7 +12,7 @@ export default class {
         let x = 0;
         let y = 0;
         const barWidth = 220;
-        const rowHeight = 170;
+        const rowHeight = 200;
         const firstBarExtraWidth = 60;
         const barsPerRow = ~~((this.width - firstBarExtraWidth) / barWidth);
 
